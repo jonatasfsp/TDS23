@@ -1,0 +1,129 @@
+/*
+SUM
+MAX
+MIN
+AVG
+
+GROUP BY
+HAVING
+*/
+
+USE AdventureWorks2012
+
+
+
+--QUANTO PRODUTOS VERMELHOS TEM O PRECO ENTRE 500 E 1000
+
+SELECT * FROM Production.Product
+
+--COUNT
+SELECT COUNT(*) AS 'Produtos vermelhos' FROM Production.Product
+WHERE Color = 'Red' 
+AND ListPrice 
+BETWEEN 500 AND 1000
+
+--PRODUTOS QUE TEM ESSA SEQ DE CARACTER NO NOME ROAD
+--LIKE E COUNT
+SELECT COUNT(Name) AS 'Pordutos com road' FROM Production.Product
+WHERE Name LIKE '%road%'
+
+--TOP = CORTE
+
+SELECT TOP 10 * FROM Sales.SalesOrderDetail ORDER BY LineTotal DESC --OU ASC
+
+SELECT * FROM Sales.SalesOrderDetail
+
+--SOMA
+
+SELECT SUM(LineTotal) AS 'TOTAL VENDAS' FROM Sales.SalesOrderDetail
+
+--Maximo
+
+SELECT MAX(LineTotal) 'MAXIMO DE VENDAS' FROM Sales.SalesOrderDetail
+
+--AVG = MEDIA
+
+SELECT AVG(LineTotal) 'MINIMO DE VENDAS' FROM Sales.SalesOrderDetail
+
+
+--GROUP BY AGRUPA UM CONJUNTO DE INFORMAÇOES 
+
+SELECT * FROM Person.Person
+
+--AGRUPANDO PELA QUANTIDADE DE VEZES Q UM NOME APARECE
+SELECT FirstName, COUNT(FirstName) AS 'QTDE' FROM Person.Person
+GROUP BY FirstName
+
+
+
+--GROUP BY COM SUM
+
+SELECT * FROM Sales.SalesOrderDetail
+
+SELECT SpecialOfferID, SUM(UnitPrice) AS 'TOTAL DE PRECO' FROM Sales.SalesOrderDetail
+GROUP BY SpecialOfferID 
+--ORDENAR PELO PROCESSO, NESSE CASO, SUM(UnitPrice)
+ORDER BY SUM(UnitPrice) DESC --OU ASC
+
+--GROUP BY COM COUNT
+
+SELECT * FROM Sales.SalesOrderDetail
+SELECT  ProductID, COUNT(ProductID) AS 'QTDE DE PRODUTOS ATÉ HOJE' FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+ORDER BY COUNT(ProductID) ASC
+
+--GROUP BY COM AVG E COM WHERE
+
+SELECT * FROM Production.Product
+SELECT Color, AVG(ListPrice) AS 'MEDIA DE PREÇO DOS PRUDUTOS PRATAS' FROM Production.Product
+WHERE Color = 'Silver'
+GROUP BY Color
+
+--QUANTAS NOMES DO MEIOS SAO IGUAIS
+SELECT MiddleName, COUNT(MiddleName) AS 'QTDE' FROM Person.Person
+GROUP BY MiddleName
+ORDER BY MiddleName ASC
+
+
+
+--DESAFIOS
+SELECT ProductID, AVG(OrderQty) FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+
+SELECT TOP 10 ProductID, SUM(LineTotal) FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+ORDER BY SUM(LineTotal) DESC
+
+SELECT ProductID, COUNT(ProductID) AS 'QTDE', AVG(OrderQty) AS 'MEDIA' FROM Production.WorkOrder
+GROUP BY ProductID
+
+
+
+--HAVING 
+
+SELECT FirstName, COUNT(FirstName) FROM Person.Person
+GROUP BY FirstName
+HAVING COUNT(FirstName) > 10
+
+--WHERE COM HAVING
+SELECT FirstName, COUNT(FirstName) FROM Person.Person
+WHERE FirstName LIKE 'A%'
+GROUP BY FirstName
+HAVING COUNT(FirstName) > 10
+
+--AGRUPAR OS PRODUTOS POR VENDAS TOTAIS ENTRE 162K E 500K
+
+SELECT ProductID, SUM(LineTotal) AS 'TOTAL DE VENDAS' FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+HAVING SUM(LineTotal) BETWEEN 162000 AND 500000
+
+--QUAIS PRODUTOS NOA ESTAO TRAZENDO EM MEDIA VENDAS DE UM MILHAO NO TOTAL
+
+SELECT ProductID, AVG(LineTotal) AS 'MEDIA DE VENDAS' FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+HAVING AVG(LineTotal) < 1000
+
+
+
+
+
